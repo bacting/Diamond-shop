@@ -1,0 +1,257 @@
+using System;
+
+namespace OrderingProgram
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+        	 
+            Console.WriteLine("|______________________________|Welcome to Diamond Store|_________________________|");  	  
+			Console.WriteLine("|________________________________________|  |_____________________________________|");
+			
+			
+			Console.WriteLine("|A/a  10+3 Diamonds = 10Pesos 	         |  |I/i  650+69 Diamonds = 650Pesos 	  |");
+			Console.WriteLine("|B/b  20+3 Diamonds = 20Pesos 	         |  |J/j  700+75 Diamonds = 700Pesos 	  |");
+			Console.WriteLine("|C/c  50+6 Diamonds = 50Pesos 	         |  |K/k  900+90 Diamonds = 900Pesos 	  |");
+			Console.WriteLine("|D/d  100+12 Diamonds = 100Pesos 	 |  |L/l  1000+100 Diamonds = 1000Pesos   |");
+			Console.WriteLine("|E/e  150+24 Diamonds = 150Pesos 	 |  |M/m  1500+250 Diamonds = 1500Pesos   |");
+			Console.WriteLine("|F/f  200+38 Diamonds = 200Pesos 	 |  |N/n  2000+350 Diamonds = 2000Pesos   |");
+			Console.WriteLine("|G/g  300+45 Diamonds = 300Pesos 	 |  |O/o  5000+450 Diamonds = 5000Pesos   |");
+			Console.WriteLine("|H/h  500+60 Diamonds = 500Pesos 	 |  |P/p  10000+700 Diamonds = 10000Pesos |");
+			Console.WriteLine("|________________________________________|  |_____________________________________|");
+			Console.WriteLine("|________________________________________|__|_____________________________________|");
+			
+			Console.WriteLine();
+			Console.WriteLine("You can Enter either Capslock Or Not");
+           
+            
+            
+            
+            
+        Console.WriteLine();
+        Console.WriteLine("Enter UserId:");
+
+        int User;
+        while (!int.TryParse(Console.ReadLine(), out User))
+        {
+            Console.WriteLine("Invalid input. Please enter a valid  UserId:");
+        }
+
+        Console.WriteLine("Enter ZoneId:");
+
+        int Zone;
+        while (!int.TryParse(Console.ReadLine(), out Zone))
+        {
+            Console.WriteLine("Invalid input. Please enter a valid ZoneId:");
+        }
+            bool continueShopping = true;
+
+            do
+            {
+                Console.Clear();
+                DisplayMainPage();
+
+                
+                 string[] code = new string[17] {"A","B","C","D","E","F","G","H","I","J","K","L","M","R","O","P","Q"};
+            string[] menu = new string[17] {"10+3 Diamonds",
+                                           "20+3 Diamonds",
+                                           "50+6 Diamonds",
+                                           "100+12 Diamonds",
+                                           "150+24 Diamonds",
+                                           "200+38 Diamonds",
+                                           "300+45 Diamonds",
+                                           "500+60 Diamonds",
+                                           "650+69 Diamonds",
+                                           "700+75 Diamonds",
+                                           "900+90 Diamond",
+	 	 	 	 	 	  		 	  	   "1000+100 Diamonds",
+	 	  		  	 		  	 	 	   "1500+250 Diamonds",
+	 	 	                               "2000+350 Diamonds",
+	 	 	 	 	 	 	 	 	 	   "5000+450 Diamonds",
+	 	 	 	 	 	 	 	 	 	   "10000+700 Diamonds",
+             	 	 	 	 	 	 	   "Finish Transaction"};
+            decimal[] price = new decimal[17] { 10.00m, 20.00m, 50.00m, 100.00m, 150.00m,200.00m,300.00m,500.00m,650.00m,700.00m,900.00m,1000.00m,1500.00m,2000.00m,5000.00m,10000.00m, 0 };
+            string strprice = "";
+            
+            
+            string transact = "N";
+            do
+            {
+
+                Console.Clear();
+                
+                Console.WriteLine("Code".PadRight(10) + "Menu".PadRight(30) + "Price");
+                for (int i = 0; i < menu.Length; i++)
+                {
+                    if (price[i] > 0) { strprice = price[i].ToString(); } else { strprice = ""; }
+                    Console.WriteLine(code[i].PadRight(10) + menu[i].PadRight(30) + strprice);
+                }
+
+                string[] order_list = new string[1];
+                int qty;
+                string strQty;
+                decimal subtotal = 0;
+                string order;
+                int code_index;
+                int current_order_index = 0;
+                decimal grand_total = 0;
+                Console.WriteLine();
+                do
+                {
+                    
+                    Console.Write("Enter menu code: ");
+                    order = Console.ReadLine().ToUpper();
+                    code_index = Array.IndexOf(code, order);
+                    if (code_index < 0)
+                    {
+                        Console.WriteLine("Invalid code!!!!");
+                    }
+                    else
+                    {
+                        if (order != "Q")
+                        {
+                            do
+                            {
+                                Console.Write("Enter Qty: ");
+                                strQty = Console.ReadLine();
+                                if (int.TryParse(strQty, out qty) == false)
+                                {
+                                    Console.WriteLine("Invalid quantity value!!!");
+                                }
+                            }
+                            while (int.TryParse(strQty, out qty) == false);
+
+                            subtotal = price[code_index] * qty;
+                            grand_total = grand_total + subtotal;
+                            order_list[current_order_index] = order.PadRight(10) + menu[code_index].PadRight(30) +
+                                price[code_index].ToString().PadRight(10) +  qty.ToString().PadRight(10) + subtotal.ToString().PadLeft(10);
+
+                            Array.Resize(ref order_list, order_list.Length + 1);
+                            current_order_index++;
+                        }
+                        else
+                        {
+                            if (grand_total == 0)
+                            {
+                                Environment.Exit(0);
+                            }
+                        }
+                    }
+                } while (order != "Q");
+
+
+                decimal amount_tendered = 0;
+                decimal change = 0;
+                string str_amount;
+
+
+                if (grand_total > 0)
+                {
+                    
+                    Console.WriteLine("\nCode".PadRight(11) + "Menu".PadRight(30) + "Price".PadRight(10) + "Qty".PadRight(10) + "Sub Total".PadLeft(10));
+                    for (int i = 0; i < order_list.Length; i++)
+                    {
+                        Console.WriteLine(order_list[i]);
+                    }
+ 		 	 	 	Console.WriteLine("UserId:" + User);
+ 		 	 	 	Console.WriteLine("ZoneId:" + Zone);
+                    string str_total = "Total Amount: " + grand_total.ToString("#,0.00");
+                    Console.WriteLine(str_total.PadLeft(70));
+                   
+
+                 
+                    do
+                    {
+                        do
+                        {
+                            Console.Write("\nEnter amount to Pay: ");
+                            str_amount = Console.ReadLine();
+                        } while (decimal.TryParse(str_amount, out amount_tendered) == false);
+
+                        if (Convert.ToDecimal(str_amount) < grand_total)
+                        {
+                            Console.WriteLine("Amount to Pay must be greater than the total amount...");
+                           
+                        }
+
+
+                    } while (Convert.ToDecimal(str_amount) < grand_total);
+
+                    change = amount_tendered - grand_total;
+                    Console.WriteLine("Change: ".PadRight(23) + change.ToString("#,0.00") );
+                    
+                }
+                
+               
+
+                do
+                {
+                    Console.Write("\nAnother trasaction:(Y/N): ");
+                    transact = Console.ReadLine().ToUpper();
+                } while (transact != "Y" && transact !="N");
+
+                
+
+            } while (transact != "N");
+             
+             
+            Console.WriteLine("ThankYou .....");
+
+
+
+                Console.Write("\nDo you want to go back to the main page? (Y/N): ");
+                string goBack = Console.ReadLine().ToUpper();
+                continueShopping = (goBack == "Y");
+            } while (continueShopping);
+
+            Console.WriteLine("Thank you for using the Diamond Store program.");
+            Console.ReadKey();
+        }
+
+        static void DisplayMainPage()
+        {
+          
+            
+            Console.WriteLine("|______________________________|Welcome to Diamond Store|_________________________|");  	  
+			Console.WriteLine("|________________________________________|  |_____________________________________|");
+			
+			
+			Console.WriteLine("|A/a  10+3 Diamonds = 10Pesos 	         |  |I/i  650+69 Diamonds = 650Pesos 	  |");
+			Console.WriteLine("|B/b  20+3 Diamonds = 20Pesos 	         |  |J/j  700+75 Diamonds = 700Pesos 	  |");
+			Console.WriteLine("|C/c  50+6 Diamonds = 50Pesos 	         |  |K/k  900+90 Diamonds = 900Pesos 	  |");
+			Console.WriteLine("|D/d  100+12 Diamonds = 100Pesos 	 |  |L/l  1000+100 Diamonds = 1000Pesos   |");
+			Console.WriteLine("|E/e  150+24 Diamonds = 150Pesos 	 |  |M/m  1500+250 Diamonds = 1500Pesos   |");
+			Console.WriteLine("|F/f  200+38 Diamonds = 200Pesos 	 |  |N/n  2000+350 Diamonds = 2000Pesos   |");
+			Console.WriteLine("|G/g  300+45 Diamonds = 300Pesos 	 |  |O/o  5000+450 Diamonds = 5000Pesos   |");
+			Console.WriteLine("|H/h  500+60 Diamonds = 500Pesos 	 |  |P/p  10000+700 Diamonds = 10000Pesos |");
+			Console.WriteLine("|________________________________________|  |_____________________________________|");
+			Console.WriteLine("|________________________________________|__|_____________________________________|");
+			
+			Console.WriteLine();
+			Console.WriteLine("You can Enter either Capslock Or Not");
+           
+            
+            
+            
+            
+        Console.WriteLine();
+        Console.WriteLine("Enter UserId:");
+
+        int User;
+        while (!int.TryParse(Console.ReadLine(), out User))
+        {
+            Console.WriteLine("Invalid input. Please enter a valid  UserId:");
+        }
+
+        Console.WriteLine("Enter ZoneId:");
+
+        int Zone;
+        while (!int.TryParse(Console.ReadLine(), out Zone))
+        {
+            Console.WriteLine("Invalid input. Please enter a valid  ZoneId:");
+        }
+           
+        }
+    }
+}
